@@ -69,6 +69,20 @@ export class TypeaheadComponent implements OnInit {
     );
 
     format = (movie: {original_title: string}) => movie.original_title;
+  
+    /* proof that you can opperate with whatever goes into model
+    addition = (): number => {
+      if(model == null)
+        return 0;
+      else{
+        let sum: number = 0;
+        for(let value of this.model.genre_ids)
+            sum += +value;
+
+        return sum;
+        }
+    }
+    */
 }
 
 /*
