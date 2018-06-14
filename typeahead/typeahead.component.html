@@ -1,0 +1,26 @@
+A typeahead example that gets values from the <code>WikipediaService</code>
+<ul>
+  <li>remote data retrieval</li>
+  <li><code>debounceTime</code> operator</li>
+  <li><code>do</code> operator</li>
+  <li><code>distinctUntilChanged</code> operator</li>
+  <li><code>switchMap</code> operator</li>
+  <li><code>catch</code> operator to display an error message in case of connectivity issue</li>
+</ul>
+
+<ng-template #suggestions let-r="result" let-t="term">
+  <div>
+    <b>Title:</b> {{ r.original_title}}
+    <b>ID:</b> {{r.id}}
+  </div>
+</ng-template>
+
+<div class="form-group">
+  <label for="typeahead-http">Search for movie in the IMDB:</label>
+  <input id="typeahead-http" type="text" class="form-control" [class.is-invalid]="searchFailed" [(ngModel)]="model" [ngbTypeahead]="search" [resultTemplate]="suggestions" [inputFormatter]="format" [showHint]="true" placeholder="IMDB search" />
+  <span *ngIf="searching">searching...</span>
+  <div class="invalid-feedback" *ngIf="searchFailed">Sorry, suggestions could not be loaded.</div>
+</div>
+
+<hr>
+<pre>Model: {{ model | json }}</pre>
