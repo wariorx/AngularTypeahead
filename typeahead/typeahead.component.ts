@@ -28,8 +28,8 @@ export class WikipediaService {
     .get(WIKI_URL, {params: PARAMS.set('query', term)}).pipe(
       //.get(WIKI_URL, {params: PARAMS.set('search', term)}).pipe(
         //map(response => response[1])
-        //map(response => response.results)
-        map(response => response.results as movie)
+        map(response => response.results)
+        //map(response => response.results as movie)
       );
   }
 }
@@ -51,7 +51,7 @@ export class TypeaheadComponent implements OnInit {
 
   constructor(private _service: WikipediaService) {}
 
-  search = (text$: Observable<movie>) =>
+  search = (text$: Observable<any>) =>
     text$.pipe(
       debounceTime(300),
       distinctUntilChanged(),
