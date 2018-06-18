@@ -10,7 +10,7 @@ A typeahead example that gets values from the <code>WikipediaService</code>
   <li><code>catch</code> operator to display an error message in case of connectivity issue</li>
 </ul>
 
-<ng-template #suggestions let-r="result" let-t="term">
+<ng-template [@fade] #suggestions let-r="result" let-t="term">
   <div>
     <b>Title:</b> {{ r.original_title}}
     <b>ID:</b> {{r.id}}
