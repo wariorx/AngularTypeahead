@@ -2,6 +2,7 @@ import {Component, Injectable} from '@angular/core';
 import {HttpClient, HttpParams} from '@angular/common/http';
 import {Observable, of} from 'rxjs';
 import {catchError, debounceTime, distinctUntilChanged, map, tap, switchMap, merge} from 'rxjs/operators';
+import {trigger, state, style, animate, transition} from '@angular/animations';
 
 //const WIKI_URL = 'https://en.wikipedia.org/w/api.php';
 const WIKI_URL = 'http://api.themoviedb.org/3/search/movie';
@@ -39,6 +40,17 @@ export class WikipediaService {
   templateUrl: './typeahead.component.html',
   providers: [WikipediaService],
   styleUrls: ['./typeahead.component.css']
+  
+  animations: [
+    trigger('fade', [
+      transition('void => *',[
+        style({ opacity: '0'}),
+        animate(1500,
+            style({opacity: '1'})
+          )])
+
+    ])
+  ]
 })
 
 
