@@ -54,7 +54,7 @@ export class WikipediaService {
 })
 
 
-export class TypeaheadComponent implements OnInit {
+export class TypeaheadComponent {
 
   model: any;
   searching = false;
