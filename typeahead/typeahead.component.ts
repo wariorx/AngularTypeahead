@@ -72,7 +72,7 @@ export class TypeaheadComponent {
       switchMap(term =>
         this._service.search(term).pipe(
           tap(() => this.searchFailed = false),
-          map(response => response.splice(0,this.limit)), //limits the number of elements suggested to the limit
+          map(response => response.splice(0,this.limit)), //reduce the number of elements suggested to the limit
           catchError(() => {
             this.searchFailed = true;
             return of([]);
