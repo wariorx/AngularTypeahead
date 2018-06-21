@@ -57,6 +57,7 @@ export class WikipediaService {
 export class TypeaheadComponent {
 
   model: any;
+  limit: number = 5;
   searching = false;
   searchFailed = false;
   hideSearchingWhenUnsubscribed = new Observable(() => () => this.searching = false);
@@ -71,6 +72,7 @@ export class TypeaheadComponent {
       switchMap(term =>
         this._service.search(term).pipe(
           tap(() => this.searchFailed = false),
+          map(response => response.splice(0,this.limit)), //limits response to x elements
           catchError(() => {
             this.searchFailed = true;
             return of([]);
@@ -81,6 +83,8 @@ export class TypeaheadComponent {
     );
 
     format = (movie: {original_title: string}) => movie.original_title;
+  
+    setLimit = (limit : number) => this.limit = limit;
   
     /* proof that you can opperate with whatever goes into model
     addition = (): number => {
