@@ -33,14 +33,8 @@ export class WikipediaService {
         map(response => (response as expectedJson).results) //this will likely be changed to match the json returned by the webserver
         );
       }
-  //default
-      return this.http
-        //.get(WIKI_URL, {params: PARAMS.set('search', term)}).pipe(
-      .get(WIKI_URL, {params: PARAMS.set('query', term)}).pipe(
-        //.get(WIKI_URL, {params: PARAMS.set('search', term)}).pipe(
-          //map(response => response[1])
-          map(response => (response as expectedJson))
-        );
+  //default, just returns the response
+      return this.http.get(WIKI_URL, {params: PARAMS.set('query', term)});
   }
 }
 
