@@ -76,7 +76,7 @@ export class TypeaheadComponent {
           total_results:  "",
           results: []
         }).pipe(
-          tap(() => this.searchFailed = false),
+          tap((response :Object[]) => response.length > 0 ? this.searchFailed = false : this.searchFailed = true),
           map(response => response.splice(0,this.limit)), //reduce the number of elements suggested to the limit
           catchError(() => {
             this.searchFailed = true;
