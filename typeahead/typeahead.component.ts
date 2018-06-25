@@ -18,8 +18,11 @@ const PARAMS = new HttpParams({
 @Injectable()
 export class WikipediaService {
   constructor(private http: HttpClient) {}
-
-  search(term: string) {
+  /*
+    Optional object parameter, so that jsons with different properties can be used. 
+    Note that here I'm just using an interface with the same name(see below), but if this service was to be exported this would allow for flexibility
+  */
+  search(term: string, expectedJson?: Object) { 
     if (term === '') {
       return of([]);
     }
@@ -29,7 +32,7 @@ export class WikipediaService {
     .get(WIKI_URL, {params: PARAMS.set('query', term)}).pipe(
       //.get(WIKI_URL, {params: PARAMS.set('search', term)}).pipe(
         //map(response => response[1])
-        map(response => response.results)
+        map(response => (response as expectedJson).results)
         //map(response => response.results as movie)
       );
   }
@@ -100,6 +103,13 @@ export class TypeaheadComponent {
     }
     */
 }
+
+//sample object that
+interface expectedJson{
+    page: string;
+    total_results: string;
+    results: Object[];
+  }
 
 /*
 export class movie{
