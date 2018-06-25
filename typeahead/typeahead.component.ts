@@ -4,38 +4,36 @@ import {Observable, of} from 'rxjs';
 import {catchError, debounceTime, distinctUntilChanged, map, tap, switchMap, merge} from 'rxjs/operators';
 import {trigger, state, style, animate, transition} from '@angular/animations';
 
-//const WIKI_URL = 'https://en.wikipedia.org/w/api.php';
-const WIKI_URL = 'http://api.themoviedb.org/3/search/movie';
-const PARAMS = new HttpParams({
-  fromObject: {
-//  action: 'opensearch',
-  //format: 'json',
-  //origin: '*'
-  api_key: 'f22e6ce68f5e5002e71c20bcba477e7d'
-  }
-});
-
 @Injectable()
 export class WikipediaService {
   constructor(private http: HttpClient) {}
-  /*
-    Optional object parameter, so that jsons with different properties can be used. 
-    Note that here I'm just using an interface with the same name(see below), but if this service was to be exported this would allow for flexibility
-  */
-  ssearch(term: string, expectedJson?: Object) : Observable<any> { //optional object parameter, so that jsons with different properties can be used
+
+  private WIKI_URL = 'http://api.themoviedb.org/3/search/movie';
+  private PARAMS = new HttpParams({
+    fromObject: {
+    api_key: 'f22e6ce68f5e5002e71c20bcba477e7d'
+    }
+  });
+
+  search(term: string, expectedJson?: Object) : Observable<any> { //optional object parameter, so that jsons with different properties can be used
     if (term === '') {
       return of([]);
     }
 
     else if (expectedJson && expectedJson.hasOwnProperty('results')){
       return this.http
-      .get(WIKI_URL, {params: PARAMS.set('query', term)}).pipe(
+      .get(this.WIKI_URL, {params: this.PARAMS.set('query', term)}).pipe(
         map(response => (response as expectedJson).results) //this will likely be changed to match the json returned by the webserver
         );
       }
-  //default, just returns the response
-      return this.http.get(WIKI_URL, {params: PARAMS.set('query', term)});
+
+      //default, just returns the response
+      return this.http.get(this.WIKI_URL, {params: this.PARAMS.set('query', term)});
   }
+
+  setConstantParams = (params: HttpParams) => this.PARAMS = params;
+
+  setURL = (url : string) => this.WIKI_URL = url;
 }
 
 @Component({
