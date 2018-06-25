@@ -22,19 +22,25 @@ export class WikipediaService {
     Optional object parameter, so that jsons with different properties can be used. 
     Note that here I'm just using an interface with the same name(see below), but if this service was to be exported this would allow for flexibility
   */
-  search(term: string, expectedJson?: Object) { 
+  ssearch(term: string, expectedJson?: Object) : Observable<any> { //optional object parameter, so that jsons with different properties can be used
     if (term === '') {
       return of([]);
     }
 
-    return this.http
-      //.get(WIKI_URL, {params: PARAMS.set('search', term)}).pipe(
-    .get(WIKI_URL, {params: PARAMS.set('query', term)}).pipe(
-      //.get(WIKI_URL, {params: PARAMS.set('search', term)}).pipe(
-        //map(response => response[1])
-        map(response => (response as expectedJson).results)
-        //map(response => response.results as movie)
-      );
+    else if (expectedJson && expectedJson.hasOwnProperty('results')){
+      return this.http
+      .get(WIKI_URL, {params: PARAMS.set('query', term)}).pipe(
+        map(response => (response as expectedJson).results) //this will likely be changed to match the json returned by the webserver
+        );
+      }
+  //default
+      return this.http
+        //.get(WIKI_URL, {params: PARAMS.set('search', term)}).pipe(
+      .get(WIKI_URL, {params: PARAMS.set('query', term)}).pipe(
+        //.get(WIKI_URL, {params: PARAMS.set('search', term)}).pipe(
+          //map(response => response[1])
+          map(response => (response as expectedJson))
+        );
   }
 }
 
@@ -73,7 +79,11 @@ export class TypeaheadComponent {
       distinctUntilChanged(),
       tap(() => this.searching = true),
       switchMap(term =>
-        this._service.search(term).pipe(
+        this._service.search(term, {
+          page: "",
+          total_results:  "",
+          results: []
+        }).pipe(
           tap(() => this.searchFailed = false),
           map(response => response.splice(0,this.limit)), //reduce the number of elements suggested to the limit
           catchError(() => {
@@ -104,12 +114,15 @@ export class TypeaheadComponent {
     */
 }
 
-//sample object that
+/*
+  Not used
+//sample object 
 interface expectedJson{
     page: string;
     total_results: string;
     results: Object[];
   }
+  */
 
 /*
 export class movie{
